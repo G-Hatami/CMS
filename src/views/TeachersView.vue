@@ -3,6 +3,7 @@
     <template #models-name>Teachers</template>
     <template #model-name>Teacher</template>
   </models-list>
+
 </template>
 <script setup>
 import {ref} from "vue";

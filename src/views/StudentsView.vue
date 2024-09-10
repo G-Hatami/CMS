@@ -11,7 +11,7 @@
           <v-row>
             <v-col cols="12" md="4" sm="6">
               <v-text-field
-                v-model="student.studentNumber"
+                v-model="student.studentId"
                 label="Student number*"
                 :rules="[v => !!v || 'Required', v => /^\d+$/.test(v) || 'Only numeric characters (0-9) are allowed']"
                 clearable
@@ -19,7 +19,7 @@
             </v-col>
             <v-col cols="12" md="4" sm="6">
               <v-text-field
-                v-model="student.firstName"
+                v-model="student.firstname"
                 label="First name*"
                 :rules="[v => !!v || 'Required', v => (v && v.length <= 48) || 'At most 48 char', v => /^[a-zA-Z\s]+$/.test(v) || 'Only alphabetic characters are allowed']"
                 clearable
@@ -27,7 +27,7 @@
             </v-col>
             <v-col cols="12" md="4" sm="6">
               <v-text-field
-                v-model="student.lastName"
+                v-model="student.lastname"
                 label="Last name*"
                 :rules="[v => !!v || 'Required', v => (v && v.length <= 48) || 'At most 48 char', v => /^[a-zA-Z\s]+$/.test(v) || 'Only alphabetic characters are allowed']"
                 clearable
@@ -43,8 +43,10 @@
             </v-col>
             <v-col cols="6">
               <v-select
-                v-model="student.faculty"
-                :items="['0-17', '18-29', '30-54', '54+']"
+                v-model="selectedFaculty"
+                :items="faculties"
+                item-title="name"
+                item-value="id"
                 label="Faculty"
                 required
               ></v-select>
@@ -66,26 +68,44 @@
       </template>
     </v-card>
   </v-dialog>
-  <p>hello</p>
-  <p class="text-green">{{ responseMessage }}</p>
+
+  <ul>
+    <li v-for="student in students" :key="student.id">
+      {{ student.firstname }} {{ student.lastname }} {{ student.studentId }}
+    </li>
+  </ul>
 </template>
 
 
 <script setup>
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import ModelsList from "@/components/ModelsList.vue";
 import axios from "axios";
 
 
 const student = ref({
-  studentNumber: '',
-  firstName: '',
-  lastName: '',
+  studentId: '',
+  firstname: '',
+  lastname: '',
   nationalNumber: '',
   faculty: '',
   address: ''
 })
-const responseMessage = ref('')
+const selectedFaculty = ref(null)
+const faculties = ref()
+const getFaculties = async () => {
+  try {
+    const response = await axios.get('https://254524c3-e01e-4716-8d9b-1460a3b69e31.mock.pstmn.io/api/faculties');
+    faculties.value = response.data;
+    console.log("gettt" , faculties.value)
+  } catch (error) {
+    console.error('Error fetching faculties:', error);
+  }
+};
+onMounted(() => {
+  getFaculties();
+});
+// const responseMessage = ref('')
 const addDialog = ref(false)
 const headers = ref([
   {title: 'Faculty Name', value: 'name', key: 'name'},
@@ -102,28 +122,30 @@ const updateStudent = (item) => {
 const deleteStudent = (item) => {
   console.log("dsfvfdgfhghghg", item)
 }
+const students = ref([])
+const getStudents = async () => {
+  try {
+    const response = await axios.get('https://254524c3-e01e-4716-8d9b-1460a3b69e31.mock.pstmn.io/api/students');
+    students.value = response.data; // Assign fetched students to reactive students array
+    console.log("why?", students.value)
+  } catch (error) {
+    console.error('Error fetching students:', error);
+  }
+};
+
 const add = async () => {
   try {
-    const response = await axios.get('https://9856f1c6-1a02-4cf1-9b33-a1fa81f758ee.mock.pstmn.io', {
-      studentNumber: student.value.studentNumber,
-      firstName: student.value.firstName,
-      lastName: student.value.lastName,
-      nationalNumber: student.value.nationalNumber,
-      faculty: student.value.faculty,
-      address: student.value.address
-    })
-    if (response.status === 200) {
-      responseMessage.value = 'Student added successfully!';
-      console.log("welll")
-    }
+    const response = await axios.post('https://254524c3-e01e-4716-8d9b-1460a3b69e31.mock.pstmn.io/api/students', student)
+    console.log('Student created:', response.data);
+    await getStudents();
   } catch (error) {
-    console.error('Error adding student:', error);
-    responseMessage.value = 'Error occurred while adding student';
-  } finally {
-    // Close the dialog after submission
-    addDialog.value = false;
+    console.error('Error creating student:', error);
   }
 }
+
+onMounted(() => {
+  getStudents()
+})
 
 </script>
 
