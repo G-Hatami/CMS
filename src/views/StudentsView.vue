@@ -103,8 +103,8 @@ const getFaculties = async () => {
   }
 };
 onMounted(() => {
-  getFaculties();
-});
+  getFaculties()
+})
 // const responseMessage = ref('')
 const addDialog = ref(false)
 const headers = ref([
