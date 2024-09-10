@@ -104,6 +104,7 @@ const getFaculties = async () => {
 };
 onMounted(() => {
   getFaculties()
+  console.log("log for mounting")
 })
 // const responseMessage = ref('')
 const addDialog = ref(false)
