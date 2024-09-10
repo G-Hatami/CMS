@@ -100,6 +100,7 @@ const getFaculties = async () => {
     console.log("gettt" , faculties.value)
   } catch (error) {
     console.error('Error fetching faculties:', error);
+
   }
 };
 onMounted(() => {
@@ -146,6 +147,7 @@ const add = async () => {
 
 onMounted(() => {
   getStudents()
+  console.log("log students!")
 })
 
 </script>
