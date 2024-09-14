@@ -128,7 +128,7 @@ const logout = () => {
 }
 const models = ref([{icon: 'mdi-view-dashboard', text: 'Dashboard', route: '/dashboard'},
   {icon: 'mdi-town-hall', text: 'Faculties', route: '/faculties'},
-  {icon: 'mdi-human-male-board', text: 'Teachers', route: '/teachers'},
+  {icon: 'mdi-human-male-board', text: 'Masters', route: '/masters'},
   {icon: 'mdi-account-school', text: 'Students', route: '/students'},
   {icon: 'mdi-book-open-variant', text: 'Courses', route: '/courses'},
 ])

@@ -72,9 +72,13 @@ defineProps({
   items: {
     type: Array,
     required: true
-  }
+  },
+  modelValue: {
+    type: String,
+    default: ''
+  },
 })
-const emit = defineEmits(['update-item', 'delete-item' , 'create-item']);
+const emit = defineEmits(['update-item', 'delete-item' , 'create-item' ]);
 
 // Emit custom events for update and delete
 const emitUpdate = (item) => {
@@ -87,6 +91,9 @@ const emitDelete = (item) => {
 const emitCreate = () => {
   emit('create-item' )
 }
+// const emitSearch = (value) =>{
+//   emit('emit-search' , value)
+// }
 
 </script>
 

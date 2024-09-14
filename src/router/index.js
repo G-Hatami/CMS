@@ -9,7 +9,7 @@ import {createRouter, createWebHistory} from 'vue-router'
 import LoginPage from "@/views/LoginPage.vue";
 import Dashboard from "@/views/DashboardView.vue";
 import FacultiesView from "@/views/FacultiesView.vue";
-import TeachersView from "@/views/TeachersView.vue";
+import TeachersView from "@/views/MastersView.vue";
 import StudentsView from "@/views/StudentsView.vue";
 import CoursesView from "@/views/CoursesView.vue";
 
@@ -32,8 +32,8 @@ const routes = [{
     component: FacultiesView
   },
   {
-    path: '/teachers',
-    name: 'teachers',
+    path: '/masters',
+    name: 'masters',
     component: TeachersView
   }, {
     path: '/courses',

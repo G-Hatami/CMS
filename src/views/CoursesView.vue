@@ -5,17 +5,29 @@
   </models-list>
 </template>
 <script setup>
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import ModelsList from "@/components/ModelsList.vue";
+import axios from "axios";
+
 
 const headers = ref([
-  {title: 'Faculty Name', value: 'name'},
-  {title: 'Department', value: 'department'},
-  {title: 'Status', value: 'status'},
+  {title: 'Course name', value: 'course-name', key: 'course-name'},
+  {title: 'Course credit', value: 'course-credit', key: 'course-credit'},
+  {title: 'Faculty', value: 'faculty', key: 'faculty'},
   {title: 'Actions', value: 'actions'}
 ])
-const items = ref([{name: 'John Doe', department: 'Computer Science', status: 'Active'},
-  {name: 'Jane Doe', department: 'IT', status: 'Inactive'},])
+const items = ref()
+
+const getCourses = async () => {
+  try {
+    items.value = (await axios.get('https://254524c3-e01e-4716-8d9b-1460a3b69e31.mock.pstmn.io/api/courses')).data
+  } catch (error) {
+    console.error('Error fetching students:', error);
+  }
+}
+onMounted(() => {
+  getCourses()
+})
 </script>
 
 
