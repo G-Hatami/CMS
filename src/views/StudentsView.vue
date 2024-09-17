@@ -66,7 +66,7 @@
       </v-card-text>
       <template v-slot:actions>
         <v-btn class="ms-auto" text="Ok" type="submit" @click="add"></v-btn>
-        <v-btn text="Cancel" @click="addDialog = false"></v-btn>
+        <v-btn text="Cancel" @click="clearStudent"></v-btn>
       </template>
     </v-card>
   </v-dialog>
@@ -108,7 +108,7 @@
       </v-card-text>
       <template v-slot:actions>
         <v-btn class="ms-auto" text="UPDATE" @click="update"></v-btn>
-        <v-btn text="CANCEL" @click="updateDialog = false; selectedStudent = null"></v-btn>
+        <v-btn text="CANCEL" @click="updateDialog = false"></v-btn>
       </template>
     </v-card>
   </v-dialog>
@@ -124,7 +124,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn @click="deleteItem">DELETE</v-btn>
-        <v-btn @click="selectedStudent = null; deleteDialog = false">CANCEL</v-btn>
+        <v-btn @click=" deleteDialog = false">CANCEL</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -135,8 +135,7 @@
 import {onMounted, ref} from "vue";
 import ModelsList from "@/components/ModelsList.vue";
 import axios from "axios";
-// import {date} from "yup";
-// import {number} from "yup";
+
 
 
 const faculties = ref()
@@ -152,7 +151,7 @@ const addDialog = ref(false)
 const updateDialog = ref(false)
 const deleteDialog = ref(false)
 const selectedStudent = ref(null)
-// const searchQuery = ref(null)
+
 const handleUpdate = (student) => {
   updateDialog.value = true
   selectedStudent.value = {...student}
@@ -193,17 +192,29 @@ const getStudents = async () => {
 //as I learned ,POST method: submits data to be processed to a specified resource.
 const add = async () => {
   if (student.value.studentId) {
-    let response;
-    try {
-      await getStudents();
-      response = await axios.post('https://254524c3-e01e-4716-8d9b-1460a3b69e31.mock.pstmn.io/api/students')
-      addDialog.value = false
-      alert(response.data)
-    } catch (error) {
-      console.error('Error creating student:', error);
-
-    }
+    await getStudents();
+    await axios.post('https://254524c3-e01e-4716-8d9b-1460a3b69e31.mock.pstmn.io/api/students', {
+      "studentId": student.value.studentId,
+      "firstname": student.value.firstname,
+      "lastname": student.value.lastname,
+      "nationalNumber": student.value.nationalNumber,
+      "address": student.value.address,
+      "faculty": student.value.faculty,
+    })
+      .then((response) => console.log("wfgre", response.status, response.data))
+      .catch((error) => console.log(error))
+    clearStudent()
   }
+
+}
+const clearStudent = () => {
+  student.value.studentId = null
+  student.value.firstname = null
+  student.value.lastname = null
+  student.value.nationalNumber = null
+  student.value.faculty = null
+  student.value.address = null
+  addDialog.value = false
 }
 
 //So no put , PATCH: it is used to update an existing entity with new information.
@@ -216,14 +227,12 @@ const update = async () => {
   }
 }
 const deleteItem = async () => {
-  try {
-    console.log((await axios.delete('https://254524c3-e01e-4716-8d9b-1460a3b69e31.mock.pstmn.io/api/students')).data)
-    deleteDialog.value = false
-  } catch (error) {
-    console.error('Error creating student:', error);
-  }
-
+  await axios.delete('https://254524c3-e01e-4716-8d9b-1460a3b69e31.mock.pstmn.io/api/students')
+    .then((response) => console.log(response.status))
+  deleteDialog.value = false
 }
+
+
 onMounted(() => {
   getFaculties();
   getStudents()

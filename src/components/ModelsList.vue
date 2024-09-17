@@ -14,6 +14,7 @@
                             :placeholder="searchPlaceholder"
                             append-inner-icon="mdi-magnify"
                             hide-details
+
               ></v-text-field>
             </v-col>
             <v-col cols="12" sm="4" md="2" class="d-flex justify-end">
@@ -73,12 +74,13 @@ defineProps({
     type: Array,
     required: true
   },
-  modelValue: {
+  searchModel: {
     type: String,
     default: ''
   },
 })
-const emit = defineEmits(['update-item', 'delete-item' , 'create-item' ]);
+const emit = defineEmits(['update-item', 'delete-item' , 'create-item' , 'update:searchModel' ]);
+
 
 // Emit custom events for update and delete
 const emitUpdate = (item) => {
