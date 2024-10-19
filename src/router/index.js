@@ -12,6 +12,7 @@ import FacultiesView from "@/views/FacultiesView.vue";
 import TeachersView from "@/views/MastersView.vue";
 import StudentsView from "@/views/StudentsView.vue";
 import CoursesView from "@/views/CoursesView.vue";
+import SettingsView from "@/views/SettingsView.vue";
 
 
 const routes = [{
@@ -43,6 +44,11 @@ const routes = [{
     path: '/students',
     name: 'students',
     component: StudentsView
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    component: SettingsView
   }
 ]
 

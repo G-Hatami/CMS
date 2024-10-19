@@ -15,6 +15,7 @@
     "roboto-fontface": "*",
     "vee-validate": "^4.13.2",
     "vue": "^3.4.31",
+    "vue-i18n": "^10.0.4",
     "vuetify": "^3.6.11",
     "yup": "^1.4.0"
   },

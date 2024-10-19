@@ -3,14 +3,14 @@
     <v-app-bar flat app class="bg-green-lighten-3 text-white">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="font-weight-bold">
-        ᴄᴏᴜʀꜱᴇ ᴍᴀɴᴀɢᴇᴍᴇɴᴛ ꜱʏꜱᴛᴇᴍ
+        {{t("navbar.entities.CourseManagementSystem")}}
       </v-toolbar-title>
       <div class="mr-10 ">
         <v-btn href="https://github.com/G-Hatami/G-Hatami" target="_blank">
           <span class="mdi mdi-github text-h5 text-white "></span>
         </v-btn>
         <v-btn class="mr-5">
-          <span>About CMS</span>
+          <span>{{ t("navbar.entities.About")}}</span>
         </v-btn>
         <v-btn class="mr-5">
           HELp & SUPPORT
@@ -27,7 +27,7 @@
               </v-list-item-title>
             </v-list-item>
 
-            <v-list-item>
+            <v-list-item @click="goToSetting">
               <v-list-item-title>
                 <span class="mdi mdi-cog text-green-lighten-2 text-h5 mr-2"></span>
                 <span>Settings</span>
@@ -117,8 +117,10 @@
 </template>
 <script setup>
 import router from "@/router";
-import {ref} from "vue";
+import {computed, ref} from "vue";
+import {useI18n} from "vue-i18n";
 
+const {t} = useI18n()
 const drawer = ref(true)
 const isDialogOpen = ref(false)
 const logout = () => {
@@ -126,12 +128,17 @@ const logout = () => {
   isDialogOpen.value = false
   router.push({name: "login"})
 }
-const models = ref([{icon: 'mdi-view-dashboard', text: 'Dashboard', route: '/dashboard'},
-  {icon: 'mdi-town-hall', text: 'Faculties', route: '/faculties'},
-  {icon: 'mdi-human-male-board', text: 'Masters', route: '/masters'},
-  {icon: 'mdi-account-school', text: 'Students', route: '/students'},
-  {icon: 'mdi-book-open-variant', text: 'Courses', route: '/courses'},
-])
+const models = computed(() => [
+  {icon: 'mdi-view-dashboard', text: t("navbar.entities.Dashboard"), route: '/dashboard'},
+  {icon: 'mdi-town-hall', text: t('navbar.entities.Faculties'), route: '/faculties'},
+  {icon: 'mdi-human-male-board', text: t('navbar.entities.Masters'), route: '/masters'},
+  {icon: 'mdi-account-school', text: t('navbar.entities.Students'), route: '/students'},
+  {icon: 'mdi-book-open-variant', text: t('navbar.entities.Courses'), route: '/courses'},
+  {icon: "mdi-cog", text: t('navbar.entities.Settings'), route: '/settings'}
+]);
+const goToSetting = () => {
+  router.push('/settings')
+}
 </script>
 
 

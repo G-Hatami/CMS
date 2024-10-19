@@ -8,7 +8,7 @@
       <v-card class="mt-10 bg-green-lighten-5 fill-height" max-width="100%">
         <v-card-text>
           <v-row class="align-center justify-lg-space-between">
-            <v-col cols="12" sm="6" md="4" class="d-flex justify-center">
+            <v-col cols="12" sm="4" md="4" class="d-flex justify-center">
               <v-text-field bg-color="white"
                             label="Search"
                             :placeholder="searchPlaceholder"
@@ -18,7 +18,7 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" sm="4" md="2" class="d-flex justify-end">
-              <v-btn @click="emitCreate" class="bg-green ">Add
+              <v-btn @click="emitCreate" class="bg-green ">
                 <slot name="model-name"></slot>
               </v-btn>
             </v-col>

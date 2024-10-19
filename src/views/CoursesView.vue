@@ -25,12 +25,12 @@
           </v-col>
           <v-col md="4" sm="6" cols="12">
             <v-select
-              v-model="course.faculty"
-              :items="faculties"
-              item-value="name"
-              item-title="name"
-              label="Faculty"
-              required
+                v-model="course.faculty"
+                :items="faculties"
+                item-value="name"
+                item-title="name"
+                label="Faculty"
+                required
             >
             </v-select>
           </v-col>
@@ -64,12 +64,12 @@
           </v-col>
           <v-col md="4" sm="6" cols="12">
             <v-select
-              v-model="selectedCourse.faculty"
-              :items="faculties"
-              item-value="name"
-              item-title="name"
-              label="Faculty"
-              required
+                v-model="selectedCourse.faculty"
+                :items="faculties"
+                item-value="name"
+                item-title="name"
+                label="Faculty"
+                required
             >
             </v-select>
           </v-col>
@@ -77,7 +77,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn @click="update">UPDAET</v-btn>
+        <v-btn @click="update">UPDATE</v-btn>
         <v-btn @click="updateDialog = false">CANCEL</v-btn>
       </v-card-actions>
     </v-card>
@@ -107,23 +107,25 @@ const addDialog = ref(false)
 const deleteDialog = ref(false)
 const updateDialog = ref(false)
 const selectedCourse = ref(null)
+
 const handleUpdate = () => {
   updateDialog.value = true
   selectedCourse.value = {...course}
 }
 const course = ref({
-  name: null,
+  courseName: null,
   courseCredit: null,
   faculty: null
 })
+//when we want to connect the items to headers we have to assign the specific names we define in postman.
 const headers = ref([
-  {title: 'Course name', value: 'course-name', key: 'course-name'},
-  {title: 'Course credit', value: 'course-credit', key: 'course-credit'},
+  {title: 'Course name', value: 'courseName', key: 'courseName'},
+  {title: 'Course credit', value: 'courseCredit', key: 'courseCredit'},
   {title: 'Faculty', value: 'faculty', key: 'faculty'},
   {title: 'Actions', value: 'actions'}
 ])
 const clearCourse = () => {
-  course.value.name = null
+  course.value.courseName = null
   course.value.faculty = null
   course.value.courseCredit = null
   addDialog.value = false
@@ -132,28 +134,31 @@ const clearCourse = () => {
 const items = ref()
 const getCourses = async () => {
   try {
-    items.value = (await axios.get('https://254524c3-e01e-4716-8d9b-1460a3b69e31.mock.pstmn.io/api/courses')).data
+    const courses = (await axios.get('https://254524c3-e01e-4716-8d9b-1460a3b69e31.mock.pstmn.io/api/courses'))
+    items.value = courses.data
+    // console.log("get course", items.value)
   } catch (error) {
     console.error('Error fetching students:', error);
   }
 }
+
 const faculties = ref()
 const getFaculties = async () => {
   try {
     const response = await axios.get('https://254524c3-e01e-4716-8d9b-1460a3b69e31.mock.pstmn.io/api/faculties');
     faculties.value = response.data;
-    console.log("gettt", faculties.value)
+    // console.log("get faculty", faculties.value)
   } catch (error) {
     console.error('Error fetching faculties:', error);
   }
 };
 const add = async () => {
   const response = await axios.post('https://254524c3-e01e-4716-8d9b-1460a3b69e31.mock.pstmn.io/api/courses',
-    {
-      name: course.value.name,
-      courseCredit: course.value.courseCredit,
-      faculty: course.value.faculty
-    })
+      {
+        name: course.value.name,
+        courseCredit: course.value.courseCredit,
+        faculty: course.value.faculty
+      })
   console.log("response of posting course:", response.status)
   addDialog.value = false
 }
@@ -178,6 +183,7 @@ const deleteItem = async () => {
 onMounted(() => {
   getCourses()
   getFaculties()
+
 })
 </script>
 
